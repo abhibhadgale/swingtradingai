@@ -14,7 +14,11 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://curly-space-succotash-5gxg656jxgvhvvq6-3000.app.github.dev', // Replace with your actual Codespace frontend URL
+  methods: ['GET', 'POST']
+}));
+
 app.use(express.json());
 app.use('/api/stocks', dataRoutes);
 app.use('/api/shortlisted-stocks', shortlistRoutes);

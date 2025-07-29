@@ -1,8 +1,10 @@
 import Shortlist from '../models/Shortlist.js';
+import Stock from '../models/Stock.js';
 import { analyzeStockTrend } from '../services/scanMovingAverage.js';
 
 export const generateShortlist = async (req, res) => {
-  const symbols = ['RELIANCE.BSE', 'TCS.BSE', 'INFY.BSE'];
+  const stocks = await Stock.find({}, 'symbol');
+  const symbols = stocks.map((s) => s.symbol);
 
   const results = [];
 

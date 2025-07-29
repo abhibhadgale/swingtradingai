@@ -20,16 +20,32 @@ export const analyzeStockTrend = async (symbol) => {
     return null;
   }
 
-  const [prev2, prev1, current] = sma.slice(-3);
-  const trend = (current > prev1 && prev1 > prev2) ? 'rising'
-              : (current < prev1 && prev1 < prev2) ? 'falling'
-              : 'flat';
+  // 🧠 Use last N SMA points to determine slope direction
+const N = 7;
+if (sma.length < N) {
+  console.log(`Not enough SMA data for ${symbol}`);
+  return null;
+}
 
-  console.log(`${symbol}: trend = ${trend}, MA = ${current.toFixed(2)}`);
+const recentSMA = sma.slice(-N);
+const diffs = [];
+
+for (let i = 1; i < recentSMA.length; i++) {
+  diffs.push(recentSMA[i] - recentSMA[i - 1]);
+}
+
+const avgSlope = diffs.reduce((acc, val) => acc + val, 0) / diffs.length;
+
+let trend = 'flat';
+if (avgSlope > 0.1) trend = 'rising';
+else if (avgSlope < -0.1) trend = 'falling';
+
+console.log(`${symbol}: trend = ${trend}, MA = ${recentSMA.at(-1).toFixed(2)}, slope = ${avgSlope.toFixed(4)}`);
+
 
   return {
     symbol,
     trend,
-    latestMA: Number(current.toFixed(2)),
+    latestMA: Number(recentSMA.at(-1).toFixed(2)),
   };
 };
