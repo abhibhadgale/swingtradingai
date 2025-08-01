@@ -4,7 +4,8 @@ import {
   fetchTrackedStocks,
   addTrackedStock,
   deleteTrackedStock,
-  fetchOhlcBySymbol
+  fetchOhlcBySymbol,
+  fetchTrendBySymbol
 } from '../api';
 import StockChart from '../components/StockChart'; // import chart component
 import { suggestEntry } from '../utils/entryStrategy';
@@ -70,8 +71,13 @@ function Track() {
 
   const handleSuggestEntry = async (symbol) => {
   try {
-    const { data } = await fetchOhlcBySymbol(symbol);
-    const result = suggestEntry(data);
+    const [{ data: ohlcData }, { data: trendResult }] = await Promise.all([
+      fetchOhlcBySymbol(symbol),
+      fetchTrendBySymbol(symbol),
+    ]);
+
+    const trend = trendResult?.trend || null;
+    const result = suggestEntry(ohlcData, trend);
     if (result.entry) {
       setEntrySuggestion({ symbol, ...result });
     } else {

@@ -1,5 +1,7 @@
 import Stock from '../models/Stock.js';
 import { fetchStockDailyData } from '../services/alphaVantageService.js';
+import { analyzeStockTrend } from '../services/scanMovingAverage.js';
+
 
 export const storeStockData = async (req, res) => {
   const { symbol } = req.params;
@@ -76,5 +78,16 @@ export const updateAllStocks = async (req, res) => {
     res.status(200).json({ message: `Updated ${updated} stock(s)` });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const getStockTrend = async (req, res) => {
+  try {
+    const result = await analyzeStockTrend(req.params.symbol);
+    if (!result) return res.status(404).json({ error: 'Trend not found' });
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Trend analysis failed' });
   }
 };
