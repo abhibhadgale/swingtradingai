@@ -1,0 +1,71 @@
+.track-container {
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 800px;
+  margin: auto;
+}
+
+.track-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.track-list {
+  list-style: none;
+  padding: 0;
+}
+
+.track-list li {
+  background: #f8f9fa;
+  border-left: 5px solid #007bff;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.track-list li:hover {
+  background-color: #e9ecef;
+}
+
+.stock-symbol {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.stock-date {
+  font-size: 0.85em;
+  color: #666;
+  margin-left: 8px;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  width: 50px;
+  color: white !important;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.delete-btn:hover {
+  background-color: #b02a37;
+}
+
+
+.chart-container {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+.stock-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

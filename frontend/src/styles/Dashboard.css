@@ -183,3 +183,23 @@ li button:hover {
   color: #666;
   cursor: not-allowed;
 }
+
+.add-to-cart-btn {
+  margin-top: 8px;
+  padding: 4px 8px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.add-to-cart-btn:hover {
+  background-color: #1976d2;
+}
+
+.cart-section {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px dashed #999;
+  background-color: #f9f9f9;
+}

@@ -10,4 +10,6 @@ export const scanShortlist = () => API.get('/shortlisted-stocks/scan');
 export const fetchAllStocks = () => API.get('/stocks/all');
 export const fetchOhlcBySymbol = (symbol) => API.get(`/stocks/ohlc/${symbol}`);
 export const updateAllStocks = () => API.get('/stocks/update-all');
-
+export const fetchTrackedStocks = () => API.get('/tracked-stocks');
+export const addTrackedStock = (stock) => API.post('/tracked-stocks', stock);
+export const deleteTrackedStock = (id) => API.delete(`/tracked-stocks/${id}`);
