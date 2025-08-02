@@ -1,13 +1,13 @@
-// StockChart.js
 import React, { useEffect, useState } from 'react';
 import {
   Chart,
   CandlestickSeries,
   LineSeries,
+  PriceLine,
 } from 'lightweight-charts-react-wrapper';
 import { fetchOhlcBySymbol } from '../api';
 
-function StockChart({ symbol }) {
+function StockChart({ symbol, entry, stopLoss, target }) {
   const [candles, setCandles] = useState([]);
   const [maData, setMaData] = useState([]);
   const [latestData, setLatestData] = useState(null);
@@ -20,7 +20,7 @@ function StockChart({ symbol }) {
       const raw = res.data;
 
       const c = raw.map((d) => ({
-        time: d.date, // 'YYYY-MM-DD'
+        time: Math.floor(new Date(d.date).getTime() / 1000), // <-- critical
         open: d.open,
         high: d.high,
         low: d.low,
@@ -32,7 +32,7 @@ function StockChart({ symbol }) {
         if (i >= 44) {
           const sum = closes.slice(i - 44, i + 1).reduce((a, b) => a + b, 0);
           return {
-            time: d.date,
+            time: Math.floor(new Date(d.date).getTime() / 1000), // <-- also critical
             value: sum / 45,
           };
         }
@@ -41,7 +41,7 @@ function StockChart({ symbol }) {
 
       setCandles(c);
       setMaData(ma);
-      setLatestData(raw[raw.length - 1]); // Set latest stock data
+      setLatestData(raw[raw.length - 1]);
     }
 
     loadData();
@@ -51,7 +51,6 @@ function StockChart({ symbol }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      {/* Stock Info Section */}
       {latestData && (
         <div style={{
           display: 'flex',
@@ -71,21 +70,57 @@ function StockChart({ symbol }) {
         </div>
       )}
 
-      {/* Chart */}
       <Chart
-        key={symbol}
-        width={800}
-        height={400}
-        layout={{ background: { color: '#fff' }, textColor: '#333' }}
-        timeScale={{ timeVisible: true, secondsVisible: false }}
-        rightPriceScale={{ borderVisible: false }}
-      >
-        <CandlestickSeries data={candles} />
-        <LineSeries
-          data={maData}
-          options={{ color: 'orange', lineWidth: 2 }}
-        />
-      </Chart>
+  key={symbol}
+  width={800}
+  height={400}
+  layout={{ background: { color: '#fff' }, textColor: '#333' }}
+  timeScale={{ timeVisible: true, secondsVisible: false }}
+  rightPriceScale={{ borderVisible: false }}
+>
+  <CandlestickSeries data={candles}>
+    {entry && (
+      <PriceLine
+        price={entry}
+        color="blue"
+        lineWidth={2}
+        lineStyle={2}
+        title="Entry"
+      />
+    )}
+    {stopLoss && (
+      <PriceLine
+        price={stopLoss}
+        color="red"
+        lineWidth={2}
+        lineStyle={0}
+        title="Stop Loss"
+      />
+    )}
+    {target && (
+      <PriceLine
+        price={target}
+        color="green"
+        lineWidth={2}
+        lineStyle={0}
+        title="Target"
+      />
+    )}
+  </CandlestickSeries>
+
+  <LineSeries
+    data={maData}
+    reactive={true}
+    options={{
+      color: 'orange',
+      lineWidth: 2,
+      priceLineVisible: true,
+      crossHairMarkerVisible: true,
+      lastValueVisible: true,
+    }}
+  />
+</Chart>
+
     </div>
   );
 }

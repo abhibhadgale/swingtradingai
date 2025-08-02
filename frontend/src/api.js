@@ -14,4 +14,6 @@ export const fetchTrackedStocks = () => API.get('/tracked-stocks');
 export const addTrackedStock = (stock) => API.post('/tracked-stocks', stock);
 export const deleteTrackedStock = (id) => API.delete(`/tracked-stocks/${id}`);
 export const fetchTrendBySymbol = (symbol) => API.get(`/stocks/trend/${symbol}`);
-
+export const createTrade = (trade) => API.post('/trades', trade);
+export const fetchAllTrades = () => API.get('/trades');
+export const fetchTradesBySymbol = (symbol) => API.get(`/trades/${symbol}`);

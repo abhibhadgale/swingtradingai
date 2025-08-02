@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import dataRoutes from './routes/dataRoutes.js';
 import shortlistRoutes from './routes/shortlistRoutes.js';
 import trackedStockRoutes from './routes/trackedStockRoutes.js';
+import tradeRoutes from './routes/tradeRoutes.js';
+
 
 import connectDB from './config/db.js';
 import cors from 'cors';
@@ -24,6 +26,8 @@ app.use(express.json());
 app.use('/api/stocks', dataRoutes);
 app.use('/api/shortlisted-stocks', shortlistRoutes);
 app.use('/api/tracked-stocks', trackedStockRoutes);
+app.use('/api/trades', tradeRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;
