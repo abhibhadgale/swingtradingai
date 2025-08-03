@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://curly-space-succotash-5gxg656jxgvhvvq6-5000.app.github.dev/api',
+  baseURL: 'http://localhost:5000/api',
 });
 
 export const fetchStockBySymbol = (symbol) => API.get(`/stocks/fetch/${symbol}`);

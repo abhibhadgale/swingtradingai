@@ -18,7 +18,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: 'https://curly-space-succotash-5gxg656jxgvhvvq6-3000.app.github.dev', // Replace with your actual Codespace frontend URL
+  origin: 'http://localhost:3000', // Replace with your actual Codespace frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
