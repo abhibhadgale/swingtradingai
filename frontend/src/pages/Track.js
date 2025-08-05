@@ -214,7 +214,7 @@ function Track() {
                         </Typography>
                         <Box sx={{ width: '100%', minWidth: 0, maxWidth: '100%', overflowX: 'auto', display: 'flex', justifyContent: 'center' }}>
                           <Box sx={{ width: { xs: '100%', sm: '100%', md: '90%' }, maxWidth: 800 }}>
-                            <StockChart symbol={selectedSymbol} />
+<StockChart key={selectedSymbol} symbol={selectedSymbol} />
                           </Box>
                         </Box>
                       </Paper>
@@ -247,6 +247,14 @@ function Track() {
                             <Typography><strong>Stop Loss:</strong> ₹{entrySuggestion.stopLoss}</Typography>
                             <Typography><strong>Target:</strong> ₹{entrySuggestion.target}</Typography>
                             <Typography><strong>Qty (@ ₹1000 risk):</strong> {entrySuggestion.quantity}</Typography>
+                            <Button
+                              variant="contained"
+                              color="success"
+                              sx={{ mt: 2 }}
+                              onClick={() => handleAddTradeClick(selectedSymbol)}
+                            >
+                              ➕ Add Trade
+                            </Button>
                           </Box>
                         )}
                       </Paper>

@@ -5,6 +5,8 @@ import dataRoutes from './routes/dataRoutes.js';
 import shortlistRoutes from './routes/shortlistRoutes.js';
 import trackedStockRoutes from './routes/trackedStockRoutes.js';
 import tradeRoutes from './routes/tradeRoutes.js';
+import bseStockRoutes from './routes/bseStockRoutes.js';
+
 
 
 import connectDB from './config/db.js';
@@ -18,7 +20,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your actual Codespace frontend URL
+  origin: 'https://curly-space-succotash-5gxg656jxgvhvvq6-3000.app.github.dev', // Replace with your actual Codespace frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
@@ -27,6 +29,7 @@ app.use('/api/stocks', dataRoutes);
 app.use('/api/shortlisted-stocks', shortlistRoutes);
 app.use('/api/tracked-stocks', trackedStockRoutes);
 app.use('/api/trades', tradeRoutes);
+app.use('/api/bse-stocks', bseStockRoutes);
 
 
 

@@ -14,7 +14,8 @@ import {
   ListItem,
   Fade,
   Slide,
-  Grow
+  Grow,
+  Autocomplete
 } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
@@ -33,7 +34,8 @@ import {
   updateAllStocks,
   fetchTrackedStocks as getTrackedStocks,
   addTrackedStock as addToTracked,
-  deleteTrackedStock as removeFromTracked
+  deleteTrackedStock as removeFromTracked,
+  fetchBSEStocks
 } from '../api';
 import StockChart from '../components/StockChart';
 import '../styles/Dashboard.css';
@@ -46,6 +48,9 @@ function Dashboard() {
   const [updating, setUpdating] = useState(false);
   const [tracked, setTracked] = useState([]);
   const [showShortlist, setShowShortlist] = useState(false);
+  const [bseStocks, setBseStocks] = useState([]);
+
+
   const navigate = useNavigate();
 
   const loadStocks = async () => {
@@ -66,14 +71,24 @@ function Dashboard() {
     }
   };
 
+  const loadBSEStocks = async () => {
+    try {
+      const { data } = await fetchBSEStocks();
+      setBseStocks(data);
+    } catch (err) {
+      console.error('Failed to load BSE stocks:', err);
+    }
+  };
+
   useEffect(() => {
     loadStocks();
     loadTrackedStocks();
+    loadBSEStocks();
   }, []);
 
   const handleFetch = async () => {
     try {
-      await fetchStockBySymbol(symbol);
+      await fetchStockBySymbol(`${symbol}.BSE`);
       setSymbol('');
       await loadStocks();
     } catch (err) {
@@ -130,13 +145,21 @@ function Dashboard() {
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center" alignItems="center" sx={{ mb: 3 }}>
-          <TextField
-            label="Enter stock symbol"
-            value={symbol}
-            onChange={(e) => setSymbol(e.target.value.toUpperCase())}
-            variant="outlined"
-            size="small"
-            sx={{ width: 250 }}
+          <Autocomplete
+            options={bseStocks}
+            getOptionLabel={(option) => `${option["Security Id"]} - ${option["Security Name"]}`}
+            onChange={(event, newValue) => {
+              if (newValue) setSymbol(newValue["Security Id"]);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search BSE stock"
+                variant="outlined"
+                size="small"
+                sx={{ width: 300 }}
+              />
+            )}
           />
           <Button
             variant="contained"
