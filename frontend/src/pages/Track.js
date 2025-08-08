@@ -86,8 +86,15 @@ function Track() {
     setSelectedSymbol(symbol);
     setLoadingSuggestion(true);
     try {
-      const { data } = await fetchOhlcBySymbol(symbol);
-      const result = suggestEntry(data);
+      const [ohlcRes, trendRes] = await Promise.all([
+      fetchOhlcBySymbol(symbol),
+      fetchTrendBySymbol(symbol)
+    ]);
+
+    const ohlc = ohlcRes.data;
+    const trendDirection = trendRes.data?.trend || null;  // <<<<< FIX
+
+    const result = suggestEntry(ohlc, trendDirection);
       if (result.entry) {
         setEntrySuggestion({ symbol, ...result });
       } else {
